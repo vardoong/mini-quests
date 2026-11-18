@@ -1,0 +1,16 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# IntelliJ
+.idea/
+*.iml
+
+# macOS
+.DS_Store
+
+# Local secrets
+.env
+.env.*
+!.env.example
