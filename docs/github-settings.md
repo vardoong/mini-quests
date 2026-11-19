@@ -12,8 +12,7 @@
   - 인텔리제이에서 사용시 PR Review 할 때 Default commit message 가 다르니 주의 해야함.
 
 ### Pages
-- Branch: main
-- Directory: /docs
+- Source: GitHub Actions
 - URL: https://vardoong.github.io/mini-quests/
 
 ## Labels
