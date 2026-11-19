@@ -1,0 +1,26 @@
+site_name: 노트
+site_url: https://vardoong.github.io/mini-quests/
+repo_url: https://github.com/vardoong/mini-quests/
+
+theme:
+    name: material
+    language: ko
+    features:
+        - navigation.instant
+        - navigation.top
+        - search.highlight
+        - content.code.copy
+    palette:
+        - scheme: default
+          toggle:
+              icon: material/weather-night
+              name: 다크 모드로 전환
+        - scheme: slate
+          toggle:
+              icon: material/weather-sunny
+              name: 라이트 모드로 전환
+
+nav:
+    - 홈: index.md
+    - 프로젝트 규칙:
+          - 커밋 컨벤션: commit-convention.md
