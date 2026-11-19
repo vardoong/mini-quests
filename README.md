@@ -1,4 +1,8 @@
 # mini-quests
+
+## 문서보기
+https://vardoong.github.io/mini-quests/
+
 ## 기술 스택
 | 분야 | 기술 |
 | ---|---|
@@ -9,5 +13,5 @@
 | API 명세 | springdoc Open API<br/>Swagger UI |
 | CI | GitHub Actions |
 
-## 문서보기
-https://vardoong.github.io/mini-quests/
+## 로컬 개발 환경
+[PostgreSQL](https://vardoong.github.io/mini-quests/local-settings/postgres/)
