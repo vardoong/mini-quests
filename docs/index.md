@@ -1,5 +1,5 @@
 # 노트
+프로젝트 하면서 적어두면 좋겠다고 생각한 문서들
 
-## 규칙과 설정
-- [커밋 컨벤션](commit-convention.md)
-- [GitHub 저장소 설정](gitHub-settings.md)
+## 깃헙보기
+https://github.com/vardoong/mini-quests
