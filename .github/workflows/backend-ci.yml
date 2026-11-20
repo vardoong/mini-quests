@@ -30,6 +30,30 @@ jobs:
         runs-on: ubuntu-24.04
         timeout-minutes: 30
 
+        # 테스트용 컨테이너 (job 종료시 정리됨)
+        services:
+            postgres:
+                image: postgres:18.7-alpine3.23
+                env:
+                    POSTGRES_DB: mini_quest
+                    POSTGRES_USER: mini_user
+                    POSTGRES_PASSWORD: mini_password
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd "pg_isready -U mini_user -d mini_quest"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+
+        # 환경변수 설정
+        env:
+            POSTGRES_DB: mini_quest
+            POSTGRES_USER: mini_user
+            POSTGRES_PASSWORD: mini_password
+            POSTGRES_PORT: 5432
+
+
         steps:
             - name: 저장소 가져오기
               uses: actions/checkout@v7
