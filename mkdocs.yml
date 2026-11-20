@@ -15,3 +15,5 @@ nav:
           - 환경변수: settings/environment-variables.md
           - PostgreSQL: settings/postgres.md
           - GitHub 저장소 설정: settings/github-settings.md
+    - 기록:
+          - 해명: history/why.md
