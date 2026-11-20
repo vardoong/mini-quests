@@ -18,7 +18,11 @@ dependencies {
 	// jpa
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	// postgresql
-	runtimeOnly("org.postgresql:postgresql:42.7.14")
+	runtimeOnly 'org.postgresql:postgresql:42.7.14'
+	// flyway
+	implementation 'org.springframework.boot:spring-boot-starter-flyway'
+	runtimeOnly 'org.flywaydb:flyway-database-postgresql'
+
 }
 
 tasks.named('test') {
