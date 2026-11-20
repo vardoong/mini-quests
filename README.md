@@ -1,4 +1,5 @@
 # mini-quests
+필요한 만큼만 한단계씩 확장해 나가는 저장소
 
 ## 문서보기
 https://vardoong.github.io/mini-quests/
