@@ -11,7 +11,7 @@ nav:
     - 프로젝트 규칙:
           - 커밋 컨벤션: commit-convention.md
           - 구조: gradle-multi-module.md
-    - 로컬 환경:
-          - PostgreSQL: local-settings/postgres.md
     - 설정:
-          - GitHub 저장소 설정: github-settings.md
+          - 환경변수: settings/environment-variables.md
+          - PostgreSQL: settings/postgres.md
+          - GitHub 저장소 설정: settings/github-settings.md

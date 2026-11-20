@@ -9,9 +9,11 @@ https://vardoong.github.io/mini-quests/
 | Language | java 21 |
 | Build | Gradle |
 | Server | Spring Boot 4.1.2 |
-| DB | PostgreSQL<br/>Spring Data JPA |
+| DB | PostgreSQL |
+| ORM | Spring Data JPA<br/>Hibernate |
 | API 명세 | springdoc Open API<br/>Swagger UI |
 | CI | GitHub Actions |
 
 ## 로컬 개발 환경
-[PostgreSQL](https://vardoong.github.io/mini-quests/local-settings/postgres/)
+- [환경변수](https://vardoong.github.io/mini-quests/settings/environment-variables/)
+- [PostgreSQL](https://vardoong.github.io/mini-quests/settings/postgres/)
