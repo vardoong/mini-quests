@@ -7,13 +7,14 @@ theme:
     name: dracula
 
 nav:
-    - 홈: index.md
-    - 프로젝트 규칙:
-          - 커밋 컨벤션: commit-convention.md
-          - 구조: gradle-multi-module.md
-    - 설정:
-          - 환경변수: settings/environment-variables.md
-          - PostgreSQL: settings/postgres.md
-          - GitHub 저장소 설정: settings/github-settings.md
-    - 기록:
-          - 해명: history/why.md
+    -   홈: index.md
+    -   프로젝트 규칙:
+            -   커밋 컨벤션: commit-convention.md
+            -   구조: gradle-multi-module.md
+    -   설정:
+            -   환경변수: settings/environment-variables.md
+            -   PostgreSQL: settings/postgres.md
+            -   Keycloak: settings/keycloak.md
+            -   GitHub 저장소 설정: settings/github-settings.md
+    -   기록:
+            -   해명: history/why.md
