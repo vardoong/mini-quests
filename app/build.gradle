@@ -33,6 +33,8 @@ dependencies {
     // test
     testImplementation 'org.springframework.security:spring-security-test'
 
+    // modules
+    implementation project(':modules:member')
 }
 
 tasks.named('test') {
