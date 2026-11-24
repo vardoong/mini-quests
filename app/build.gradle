@@ -1,33 +1,40 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot'
-	id 'io.spring.dependency-management'
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
 }
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	// jpa
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	// postgresql
-	runtimeOnly 'org.postgresql:postgresql:42.7.14'
-	// flyway
-	implementation 'org.springframework.boot:spring-boot-starter-flyway'
-	runtimeOnly 'org.flywaydb:flyway-database-postgresql'
+    // jpa
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // postgresql
+    runtimeOnly 'org.postgresql:postgresql:42.7.14'
+    // flyway
+    implementation 'org.springframework.boot:spring-boot-starter-flyway'
+    runtimeOnly 'org.flywaydb:flyway-database-postgresql'
 
-	// lombok
-	annotationProcessor 'org.projectlombok:lombok'
-	compileOnly 'org.projectlombok:lombok'
+    // lombok
+    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+
+    // keycloak
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
+    // test
+    testImplementation 'org.springframework.security:spring-security-test'
+
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
