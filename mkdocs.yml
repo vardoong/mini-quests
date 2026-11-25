@@ -1,20 +1,53 @@
 site_name: mini-quests 노트
 site_url: https://vardoong.github.io/mini-quests/
-repo_url: https://github.com/vardoong/mini-quests/
+#repo_url: https://github.com/vardoong/mini-quests/
 site_author: ian
 
 theme:
-    name: dracula
+  name: material
+  palette:
+    scheme: slate
+  logo: assets/logo.svg
+  favicon: assets/favicon.png
+  font:
+    text: Source Code Pro
+    code: Source Code Pro
+  features:
+    - content.code.copy # 코드 블록에 복사 아이콘
+    - navigation.top # 맨 위로 가기 버튼
+    - navigation.footer # 이전/다음 문서
+    - navigation.tracking # 스크롤 이동시 앵커 태그 바뀜
+    - search.suggest # 검색시 자동완성 제안
+    - search.highlight # 검색해서 페이지 이동시, 검색단어 하이라이트
+    - toc.follow # 페이지 이동시 우측 목차 스크롤 허용
+
+extra_css:
+  - stylesheets/dracula.css
+
+extra:
+  generator: false
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.superfences # 리스트 & 인용구 & 탭 에 중첩된 코드블록 처리
+  - pymdownx.inlinehilite # 인라인 코드에서 강조 표시 on
+  - attr_list # md 요소에 html 속성을 붙일 수 있게 해줌
+  - pymdownx.emoji: # 아이콘 문법 사용
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 nav:
-    -   홈: index.md
-    -   프로젝트 규칙:
-            -   커밋 컨벤션: commit-convention.md
-            -   구조: gradle-multi-module.md
-    -   설정:
-            -   환경변수: settings/environment-variables.md
-            -   PostgreSQL: settings/postgres.md
-            -   Keycloak: settings/keycloak.md
-            -   GitHub 저장소 설정: settings/github-settings.md
-    -   기록:
-            -   해명: history/why.md
+  - Index: index.md
+  - 프로젝트 규칙:
+      - 커밋 컨벤션: rules/commit-convention.md
+      - 구조: rules/gradle-multi-module.md
+  - 설정:
+      - 환경변수: settings/environment-variables.md
+      - PostgreSQL: settings/postgres.md
+      - Keycloak: settings/keycloak.md
+      - GitHub 저장소 설정: settings/github-settings.md
+  - 기록:
+      - 해명: history/why.md

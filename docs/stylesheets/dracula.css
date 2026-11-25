@@ -1,0 +1,311 @@
+/* ===== 팔레트: dracula-ui.min.css 실제 값 ===== */
+:root {
+    --d-black: #21222c; /* drac-bg-black : 사이드바 */
+    --d-black-secondary: #414558; /* drac-bg-black-secondary : 본문 배경 */
+    --d-text: #b6b9c9; /* drac-text-grey-ternary : 본문 글자 */
+    --d-white: #f8f8f2;
+    --d-line: #6c7393; /* disabled : 표 테두리 */
+    --d-purple: #9580ff;
+    --d-cyan: #80ffea;
+    --d-green: #8aff80;
+    --d-pink: #ff80bf;
+    --sb-width: 13rem; /* 사이드바 폭 */
+}
+
+[data-md-color-scheme="slate"] {
+    /* 본문 */
+    --md-default-bg-color: var(--d-black-secondary);
+    --md-default-fg-color: var(--d-text);
+    --md-default-fg-color--light: var(--d-text);
+    --md-default-fg-color--lighter: #b6b9c9aa;
+    --md-typeset-color: var(--d-text);
+    --md-typeset-a-color: var(--d-purple);
+
+    /* 헤더 / 포인트 */
+    --md-primary-fg-color: var(--d-purple);
+    --md-primary-bg-color: var(--d-white);
+    --md-accent-fg-color: var(--d-purple);
+
+    /* 푸터 */
+    --md-footer-bg-color: var(--d-black);
+    --md-footer-bg-color--dark: var(--d-black);
+
+    /* 코드 블록 */
+    --md-code-bg-color: var(--d-black);
+    --md-code-fg-color: var(--d-white);
+    --md-code-hl-color: #44475a;
+    --md-code-hl-keyword-color: #ff79c6;
+    --md-code-hl-string-color: #f1fa8c;
+    --md-code-hl-number-color: #bd93f9;
+    --md-code-hl-function-color: #50fa7b;
+    --md-code-hl-constant-color: #bd93f9;
+    --md-code-hl-name-color: var(--d-white);
+    --md-code-hl-operator-color: #ff79c6;
+    --md-code-hl-punctuation-color: var(--d-white);
+    --md-code-hl-comment-color: #6272a4;
+    --md-code-hl-special-color: #ffb86c;
+    --md-code-hl-generic-color: #8be9fd;
+    --md-code-hl-variable-color: #ffb86c;
+}
+
+/* ===== 본문 ===== */
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3 {
+    color: var(--d-white);
+    font-weight: 500;
+}
+
+.md-typeset hr {
+    border-bottom: 1px solid var(--d-line);
+}
+
+/* 인라인 코드: dracula-ui 의 code 스타일 그대로 */
+.md-typeset :not(pre) > code {
+    background: rgba(149, 128, 255, 0.1);
+    color: rgba(149, 128, 255, 0.9);
+    box-shadow: none;
+}
+
+/* 표 */
+.md-typeset table:not([class]) {
+    display: table;
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--d-line);
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.md-typeset table:not([class]) th,
+.md-typeset table:not([class]) td {
+    border: 1px solid var(--d-line);
+    padding: 0.9em 1em;
+}
+
+.md-typeset table:not([class]) th {
+    background: transparent;
+    color: var(--d-white);
+    font-weight: 700;
+    font-size: 0.7rem;
+}
+
+.md-typeset table:not([class]) tbody tr:hover {
+    background: rgba(248, 248, 242, 0.05);
+}
+
+/* ===== nav (좌측 사이드바) ===== */
+.md-sidebar--primary,
+.md-nav--primary {
+    background-color: var(--d-black);
+}
+
+.md-nav--primary .md-nav__title {
+    background-color: var(--d-black);
+    color: var(--d-white);
+    box-shadow: none;
+}
+
+.md-nav__link {
+    color: var(--d-white);
+}
+
+.md-nav__link:hover,
+.md-nav__link:focus {
+    color: var(--d-purple);
+}
+
+.md-nav__link--active,
+.md-nav__item--active > .md-nav__link {
+    color: var(--d-purple);
+    font-weight: 700;
+}
+
+.md-nav__icon {
+    color: var(--d-purple);
+}
+
+/* 화살표 두껍게 (살짝 번지는 효과 + 크기 약간 확대) */
+.md-nav--primary .md-nav__icon {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 0.4px currentColor) drop-shadow(0 0 0.4px currentColor);
+}
+
+/* 하위 메뉴 왼쪽 세로선 */
+.md-nav--primary .md-nav[data-md-level="1"] > .md-nav__list {
+    margin: 0.4rem 0 0.6rem 0.3rem;
+    border-left: 2px solid #44475a;
+}
+
+/* ===== 우측 목차 ===== */
+.md-nav--secondary .md-nav__title {
+    background-color: transparent;
+    color: var(--d-white);
+    font-weight: 700;
+    box-shadow: none;
+    border-left: 3px solid var(--d-purple);
+    padding-left: 0.6rem;
+}
+
+/* ===== 헤더 ===== */
+.md-header {
+    background-color: var(--d-purple);
+    box-shadow: none;
+}
+
+.md-search__form {
+    background-color: var(--d-black-secondary);
+}
+
+@media screen and (min-width: 60em) {
+    .md-search__inner {
+        width: 14rem;
+    }
+
+    .md-search {
+        margin-left: 0.5rem;
+        margin-right: 1rem;
+    }
+}
+
+/* ===== 푸터 ===== */
+.md-footer {
+    background-color: var(--d-black);
+}
+
+.md-footer-meta {
+    display: none;
+}
+
+/* 이전/다음 영역 */
+.md-footer__inner {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+}
+
+.md-footer__link {
+    display: flex;
+    align-items: center;
+    width: auto;
+    max-width: 50%;
+    min-width: 6rem;
+    padding: 0.35rem 0.8rem;
+    margin: 0.3rem;
+    border-radius: 0.3rem;
+}
+
+.md-footer__link--prev {
+    margin-right: auto;
+    text-align: left;
+}
+
+.md-footer__link--next {
+    margin-left: auto;
+    text-align: right;
+}
+
+/* 방향 + 문서 제목 */
+.md-footer__title {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: none;
+    padding: 0;
+    margin: 0;
+    line-height: 1.2;
+    display: block !important;
+}
+
+.md-footer__direction {
+    position: static;
+    display: block;
+    padding: 0;
+    margin: 0;
+    font-size: 0.6rem;
+    line-height: 1.2;
+    white-space: nowrap;
+    opacity: 1;
+}
+
+.md-footer__title .md-ellipsis {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.75rem;
+    line-height: 1.2;
+}
+
+/* 화살표 아이콘 영역 */
+.md-footer__button {
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 0;
+}
+
+.md-footer__link--prev .md-footer__button {
+    margin-right: 0.5rem;
+}
+
+.md-footer__link--next .md-footer__button {
+    margin-left: 0.5rem;
+}
+
+/* ===== 데스크톱: 좌측 사이드바 전체 높이 고정 ===== */
+@media screen and (min-width: 76.25em) {
+    .md-sidebar--primary {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 5;
+        width: var(--sb-width);
+        height: 100vh;
+        padding: 0;
+    }
+
+    .md-sidebar--primary .md-sidebar__scrollwrap {
+        height: 100%;
+        margin: 0;
+        padding: 1.2rem 1.2rem 2rem;
+    }
+
+    /* 헤더, 본문, 푸터를 사이드바 폭만큼 오른쪽으로 */
+    .md-header,
+    .md-main,
+    .md-footer {
+        margin-left: var(--sb-width);
+    }
+
+    /* 본문 최대폭 제한 해제 */
+    .md-main__inner.md-grid,
+    .md-header__inner.md-grid {
+        max-width: none;
+    }
+
+    /* 사이드바 상단 사이트 이름 */
+    .md-nav--primary > .md-nav__title {
+        display: block;
+        text-align: center;
+        padding: 1.2rem 0 1rem;
+        margin-bottom: 1.5rem;
+        font-size: 0.8rem;
+        font-weight: 400;
+        border-bottom: 1px solid #44475a;
+    }
+
+    /* 본문 오른쪽 구분선 + 우측 목차 */
+    .md-content {
+        border-right: 1px solid var(--d-line);
+    }
+
+    .md-sidebar--secondary {
+        padding-left: 0.8rem;
+    }
+}
+
+/* 펼쳐진 섹션의 화살표 색 (닫힘: 보라 / 펼침: 핑크) */
+.md-nav--primary .md-nav__toggle:checked ~ .md-nav__link .md-nav__icon,
+.md-nav--primary .md-nav__toggle:checked ~ label .md-nav__icon {
+    color: var(--d-pink);
+}
