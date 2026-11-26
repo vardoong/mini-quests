@@ -28,7 +28,8 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
 
     // modules
-    implementation project(':modules:member')
+    implementation project(':modules:user')
+
 }
 
 tasks.named('test') {
