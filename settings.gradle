@@ -2,3 +2,4 @@ rootProject.name = 'mini-quests'
 
 include 'app'
 include 'modules:user'
+include 'modules:quest'

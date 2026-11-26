@@ -29,6 +29,7 @@ dependencies {
 
     // modules
     implementation project(':modules:user')
+    implementation project(':modules:quest')
 
 }
 
