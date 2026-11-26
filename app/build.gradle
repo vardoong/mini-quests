@@ -4,12 +4,6 @@ plugins {
     id 'io.spring.dependency-management'
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
@@ -18,7 +12,7 @@ dependencies {
     // jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     // postgresql
-    runtimeOnly 'org.postgresql:postgresql:42.7.14'
+    runtimeOnly 'org.postgresql:postgresql'
     // flyway
     implementation 'org.springframework.boot:spring-boot-starter-flyway'
     runtimeOnly 'org.flywaydb:flyway-database-postgresql'

@@ -1,7 +1,7 @@
 plugins {
-	/* 루트 프로젝트에는 플러그인 버전 지정만 하고, 적용은 안함 */
-	id 'org.springframework.boot' version '4.1.2' apply false
-	id 'io.spring.dependency-management' version '1.1.7' apply false
+    /* 루트 프로젝트에는 플러그인 버전 지정만 하고, 적용은 안함 */
+    id 'org.springframework.boot' version '4.1.2' apply false
+    id 'io.spring.dependency-management' version '1.1.7' apply false
 }
 
 group = 'com.miniquests'
@@ -9,10 +9,18 @@ version = '0.0.1-SNAPSHOT'
 
 /* 하위 프로젝트 공통 설정 */
 subprojects {
-	group = rootProject.group
-	version = rootProject.version
+    group = rootProject.group
+    version = rootProject.version
 
-	repositories {
-		mavenCentral()
-	}
+    repositories {
+        mavenCentral()
+    }
+
+    pluginManager.withPlugin('java') {
+        java {
+            toolchain {
+                languageVersion = JavaLanguageVersion.of(21)
+            }
+        }
+    }
 }
