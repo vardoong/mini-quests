@@ -4,7 +4,7 @@ import com.miniquests.quest.application.QuestCommandService;
 import com.miniquests.quest.application.QuestQueryService;
 import com.miniquests.quest.presentation.dto.MyQuestResponse;
 import com.miniquests.quest.presentation.dto.QuestResponse;
-import com.miniquests.user.application.UserService;
+import com.miniquests.security.JwtUserResolver;
 import com.miniquests.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.net.URL;
 import java.time.Instant;
 import java.util.List;
 
@@ -23,8 +22,8 @@ import java.util.List;
 public class QuestController {
 
     private final QuestQueryService questQueryService;
-    private final UserService userService;
     private final QuestCommandService questCommandService;
+    private final JwtUserResolver jwtUserResolver;
 
     @GetMapping
     public List<QuestResponse> findActiveQuests() {
@@ -48,28 +47,7 @@ public class QuestController {
             @AuthenticationPrincipal Jwt jwt,
             @PathVariable Long questId
     ) {
-        String displayName = jwt.getClaimAsString("name");
-        if (displayName == null || displayName.isBlank()) {
-            displayName = jwt.getClaimAsString("preferred_username");
-        }
-
-        URL issuer = jwt.getIssuer();
-        String subject = jwt.getSubject();
-
-        if (issuer == null || subject == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.UNAUTHORIZED,
-                    "Token must contain iss and sub claims."
-            );
-        }
-
-        User user = userService.getOrCreate(
-                displayName,
-                issuer.toString(),
-                subject,
-                jwt.getClaimAsString("email")
-        );
-
+        User user = jwtUserResolver.resolve(jwt);
         questCommandService.start(user.getId(), questId);
     }
 
@@ -79,55 +57,13 @@ public class QuestController {
             @AuthenticationPrincipal Jwt jwt,
             @PathVariable Long questId
     ) {
-        String displayName = jwt.getClaimAsString("name");
-        if (displayName == null || displayName.isBlank()) {
-            displayName = jwt.getClaimAsString("preferred_username");
-        }
-
-        URL issuer = jwt.getIssuer();
-        String subject = jwt.getSubject();
-
-        if (issuer == null || subject == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.UNAUTHORIZED,
-                    "Token must contain iss and sub claims."
-            );
-        }
-
-        User user = userService.getOrCreate(
-                displayName,
-                issuer.toString(),
-                subject,
-                jwt.getClaimAsString("email")
-        );
-
+        User user = jwtUserResolver.resolve(jwt);
         questCommandService.complete(user.getId(), questId, Instant.now());
     }
 
     @GetMapping("/my")
     public List<MyQuestResponse> findMyQuests(@AuthenticationPrincipal Jwt jwt) {
-        String displayName = jwt.getClaimAsString("name");
-        if (displayName == null || displayName.isBlank()) {
-            displayName = jwt.getClaimAsString("preferred_username");
-        }
-
-        URL issuer = jwt.getIssuer();
-        String subject = jwt.getSubject();
-
-        if (issuer == null || subject == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.UNAUTHORIZED,
-                    "Token must contain iss and sub claims."
-            );
-        }
-
-        User user = userService.getOrCreate(
-                displayName,
-                issuer.toString(),
-                subject,
-                jwt.getClaimAsString("email")
-        );
-
+        User user = jwtUserResolver.resolve(jwt);
         return questQueryService.findMyQuests(user.getId()).stream()
                 .map(MyQuestResponse::from)
                 .toList();
