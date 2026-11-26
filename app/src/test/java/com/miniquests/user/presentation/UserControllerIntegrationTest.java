@@ -42,7 +42,7 @@ class UserControllerIntegrationTest {
 
     @Test
     @DisplayName("인증된 JWT 정보로 회원을 생성하고 현재 회원 정보를 반환한다")
-    void createsMemberFromAuthenticatedJwt() throws Exception {
+    void createsUserFromAuthenticatedJwt() throws Exception {
         String subject = UUID.randomUUID().toString();
 
         mockMvc.perform(
@@ -65,7 +65,7 @@ class UserControllerIntegrationTest {
 
     @Test
     @DisplayName("같은 OIDC 사용자로 다시 요청하면 기존 회원을 반환한다")
-    void returnsExistingMemberForSameOidcIdentity() throws Exception {
+    void returnsExistingUserForSameOidcIdentity() throws Exception {
         String subject = UUID.randomUUID().toString();
 
         mockMvc.perform(get("/api/users/me")

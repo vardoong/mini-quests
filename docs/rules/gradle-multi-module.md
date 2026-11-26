@@ -71,8 +71,8 @@ mini-quests/
 1. `modules/<feature-module>/` 디렉터리와 모듈의 `build.gradle` 생성
 2. `settings.gradle`에 해당 하위 프로젝트 등록
 3. `app`에서 사용할 모듈이면 `app/build.gradle`에 프로젝트 의존성 추가
-    - 예: `app`에서 `member` 모듈 사용
+    - 예: `app`에서 `user` 모듈 사용
         ```groovy
-        implementation project(':modules:member')
+        implementation project(':modules:user')
         ```
 4. 기능 코드를 작성 또는 이동하고 모듈 사이의 의존 방향 확인
