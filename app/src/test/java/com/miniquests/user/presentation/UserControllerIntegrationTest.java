@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +38,19 @@ class UserControllerIntegrationTest {
     @DisplayName("인증되지 않은 요청은 현재 회원 정보를 조회할 수 없다")
     void rejectsUnauthenticatedRequest() throws Exception {
         mockMvc.perform(get("/api/users/me"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.code").value("APP-002"))
+                .andExpect(jsonPath("$.message").value("인증이 필요합니다."));
+    }
+
+    @Test
+    @DisplayName("유효하지 않은 Bearer 토큰은 공통 401 오류 응답을 반환한다")
+    void rejectsInvalidBearerToken() throws Exception {
+        mockMvc.perform(get("/api/users/me")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer invalid-token"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.code").value("APP-002"))
+                .andExpect(jsonPath("$.message").value("인증이 필요합니다."));
     }
 
     @Test

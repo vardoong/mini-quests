@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum AppErrorCode implements ErrorCode {
 
     MISSING_REQUIRED_CLAIMS(ErrorType.UNAUTHORIZED, "APP-001", "인증 토큰에 필수 사용자 정보가 없습니다."),
+    AUTHENTICATION_REQUIRED(ErrorType.UNAUTHORIZED, "APP-002", "인증이 필요합니다."),
     ;
 
     private final ErrorType type;
