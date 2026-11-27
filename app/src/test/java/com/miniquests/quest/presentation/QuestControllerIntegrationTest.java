@@ -118,7 +118,9 @@ class QuestControllerIntegrationTest {
         questRepository.flush();
 
         mockMvc.perform(get("/api/quests/{questId}", quest.getId()).with(jwt()))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value("QUE-001"))
+                .andExpect(jsonPath("$.message").value("활성 퀘스트를 찾을 수 없습니다."));
     }
 
     @Test

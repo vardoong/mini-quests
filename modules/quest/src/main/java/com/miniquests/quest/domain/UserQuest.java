@@ -1,5 +1,7 @@
 package com.miniquests.quest.domain;
 
+import com.miniquests.common.error.BusinessException;
+import com.miniquests.quest.error.QuestErrorCode;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -52,7 +54,7 @@ public class UserQuest {
 
     public void complete(Instant completedAt) {
         if (status == UserQuestStatus.COMPLETED) {
-            throw new IllegalStateException("이미 완료된 퀘스트입니다.");
+            throw new BusinessException(QuestErrorCode.QUEST_ALREADY_COMPLETED);
         }
 
         this.completedAt = Objects.requireNonNull(completedAt);

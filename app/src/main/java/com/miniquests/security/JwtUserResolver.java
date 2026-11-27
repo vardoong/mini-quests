@@ -1,12 +1,12 @@
 package com.miniquests.security;
 
+import com.miniquests.common.error.BusinessException;
+import com.miniquests.error.AppErrorCode;
 import com.miniquests.user.application.UserService;
 import com.miniquests.user.domain.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URL;
 
@@ -26,10 +26,7 @@ public class JwtUserResolver {
         String subject = jwt.getSubject();
 
         if (issuer == null || subject == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.UNAUTHORIZED,
-                    "Token must contain iss and sub claims."
-            );
+            throw new BusinessException(AppErrorCode.MISSING_REQUIRED_CLAIMS);
         }
 
         return userService.getOrCreate(

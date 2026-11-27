@@ -1,5 +1,6 @@
 rootProject.name = 'mini-quests'
 
 include 'app'
+include 'modules:common'
 include 'modules:user'
 include 'modules:quest'

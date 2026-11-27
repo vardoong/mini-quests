@@ -1,11 +1,10 @@
 package com.miniquests.quest.application;
 
-import com.miniquests.quest.application.exception.ActiveQuestNotFoundException;
-import com.miniquests.quest.application.exception.QuestAlreadyStartedException;
-import com.miniquests.quest.application.exception.UserQuestNotFoundException;
+import com.miniquests.common.error.BusinessException;
 import com.miniquests.quest.domain.Quest;
 import com.miniquests.quest.domain.UserQuest;
 import com.miniquests.quest.domain.UserQuestStatus;
+import com.miniquests.quest.error.QuestErrorCode;
 import com.miniquests.quest.repository.QuestRepository;
 import com.miniquests.quest.repository.UserQuestRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -17,15 +16,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class QuestCommandServiceTest {
@@ -70,10 +66,12 @@ class QuestCommandServiceTest {
         when(questRepository.findByIdAndIsActiveTrue(questId))
                 .thenReturn(Optional.empty());
 
-        assertThrows(
-                ActiveQuestNotFoundException.class,
+        BusinessException exception = assertThrows(
+                BusinessException.class,
                 () -> questCommandService.start(userId, questId)
         );
+        assertEquals(QuestErrorCode.ACTIVE_QUEST_NOT_FOUND, exception.getErrorCode());
+        assertEquals(Map.of(), exception.getDetails());
 
         verify(userQuestRepository, never()).existsByUserIdAndQuest_Id(userId, questId);
         verify(userQuestRepository, never()).save(any(UserQuest.class));
@@ -89,10 +87,12 @@ class QuestCommandServiceTest {
         when(userQuestRepository.existsByUserIdAndQuest_Id(userId, questId))
                 .thenReturn(true);
 
-        assertThrows(
-                QuestAlreadyStartedException.class,
+        BusinessException exception = assertThrows(
+                BusinessException.class,
                 () -> questCommandService.start(userId, questId)
         );
+        assertEquals(QuestErrorCode.QUEST_ALREADY_STARTED, exception.getErrorCode());
+        assertEquals(Map.of(), exception.getDetails());
 
         verify(userQuestRepository, never()).save(any(UserQuest.class));
     }
@@ -124,10 +124,12 @@ class QuestCommandServiceTest {
         when(userQuestRepository.findByUserIdAndQuest_Id(userId, questId))
                 .thenReturn(Optional.empty());
 
-        assertThrows(
-                UserQuestNotFoundException.class,
+        BusinessException exception = assertThrows(
+                BusinessException.class,
                 () -> questCommandService.complete(userId, questId, completedAt)
         );
+        assertEquals(QuestErrorCode.USER_QUEST_NOT_FOUND, exception.getErrorCode());
+        assertEquals(Map.of(), exception.getDetails());
     }
 
     @Test
@@ -143,10 +145,12 @@ class QuestCommandServiceTest {
         when(userQuestRepository.findByUserIdAndQuest_Id(userId, questId))
                 .thenReturn(Optional.of(userQuest));
 
-        assertThrows(
-                IllegalStateException.class,
+        BusinessException exception = assertThrows(
+                BusinessException.class,
                 () -> questCommandService.complete(userId, questId, secondCompletedAt)
         );
+        assertEquals(QuestErrorCode.QUEST_ALREADY_COMPLETED, exception.getErrorCode());
+        assertEquals(Map.of(), exception.getDetails());
 
         assertEquals(UserQuestStatus.COMPLETED, userQuest.getStatus());
         assertEquals(firstCompletedAt, userQuest.getCompletedAt());

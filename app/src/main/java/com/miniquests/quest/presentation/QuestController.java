@@ -1,7 +1,9 @@
 package com.miniquests.quest.presentation;
 
+import com.miniquests.common.error.BusinessException;
 import com.miniquests.quest.application.QuestCommandService;
 import com.miniquests.quest.application.QuestQueryService;
+import com.miniquests.quest.error.QuestErrorCode;
 import com.miniquests.quest.presentation.dto.MyQuestResponse;
 import com.miniquests.quest.presentation.dto.QuestResponse;
 import com.miniquests.security.JwtUserResolver;
@@ -11,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.util.List;
@@ -37,7 +38,7 @@ public class QuestController {
         return questQueryService.findActiveQuest(questId)
                 .map(QuestResponse::from)
                 .orElseThrow(() ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND, "퀘스트를 찾을 수 없습니다.")
+                        new BusinessException(QuestErrorCode.ACTIVE_QUEST_NOT_FOUND)
                 );
     }
 

@@ -28,6 +28,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
 
     // modules
+    implementation project(':modules:common') // 명시적 작성
     implementation project(':modules:user')
     implementation project(':modules:quest')
 
