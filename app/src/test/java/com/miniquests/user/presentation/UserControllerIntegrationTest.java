@@ -41,6 +41,20 @@ class UserControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("iss 클레임이 없는 인증 토큰은 공통 401 오류 응답을 반환한다")
+    void rejectsAuthenticatedJwtWithoutIssuerClaim() throws Exception {
+        long userCountBeforeRequest = userRepository.count();
+
+        mockMvc.perform(get("/api/users/me")
+                        .with(jwt().jwt(token -> token.subject("subject-without-issuer"))))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.code").value("APP-001"))
+                .andExpect(jsonPath("$.message").value("인증 토큰에 필수 사용자 정보가 없습니다."));
+
+        assertEquals(userCountBeforeRequest, userRepository.count());
+    }
+
+    @Test
     @DisplayName("인증된 JWT 정보로 회원을 생성하고 현재 회원 정보를 반환한다")
     void createsUserFromAuthenticatedJwt() throws Exception {
         String subject = UUID.randomUUID().toString();
