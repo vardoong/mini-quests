@@ -6,6 +6,7 @@ import com.miniquests.quest.domain.UserQuest;
 import com.miniquests.quest.domain.UserQuestStatus;
 import com.miniquests.quest.repository.UserQuestRepository;
 import com.miniquests.user.domain.User;
+import com.miniquests.user.domain.UserStatus;
 import com.miniquests.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -66,6 +67,42 @@ class QuestControllerIntegrationTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value("APP-002"))
                 .andExpect(jsonPath("$.message").value("인증이 필요합니다."))
+                .andExpect(jsonPath("$.details").doesNotExist());
+    }
+
+    @Test
+    @DisplayName("활성 회원은 퀘스트 API에 접근할 수 있다")
+    void allowsActiveUserToAccessQuestApi() throws Exception {
+        String subject = UUID.randomUUID().toString();
+        userRepository.saveAndFlush(User.builder()
+                .displayName("활성 회원")
+                .oidcIssuer(OIDC_ISSUER)
+                .oidcSubject(subject)
+                .status(UserStatus.ACTIVE)
+                .build());
+
+        mockMvc.perform(get("/api/quests")
+                        .with(authenticatedJwt(subject, "활성 회원", "active@example.com")))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("정지 회원은 퀘스트 목록 API에 접근할 수 없고 공통 403 응답을 받는다")
+    void rejectsSuspendedUserFromQuestApi() throws Exception {
+        String subject = UUID.randomUUID().toString();
+        userRepository.saveAndFlush(User.builder()
+                .displayName("정지 회원")
+                .oidcIssuer(OIDC_ISSUER)
+                .oidcSubject(subject)
+                .status(UserStatus.SUSPENDED)
+                .build());
+
+        mockMvc.perform(get("/api/quests")
+                        .with(authenticatedJwt(subject, "정지 회원", "suspended@example.com")))
+                .andExpect(status().isForbidden())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.code").value("APP-008"))
+                .andExpect(jsonPath("$.message").value("정지된 회원입니다."))
                 .andExpect(jsonPath("$.details").doesNotExist());
     }
 

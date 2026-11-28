@@ -41,4 +41,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Transactional(readOnly = true)
+    public Boolean isSuspendedUser(
+            String oidcIssuer,
+            String oidcSubject
+    ) {
+        Optional<User> userOptional = userRepository.findByOidcIssuerAndOidcSubject(oidcIssuer, oidcSubject);
+        return userOptional.isPresent() && userOptional.get().getStatus() == UserStatus.SUSPENDED;
+    }
+
 }

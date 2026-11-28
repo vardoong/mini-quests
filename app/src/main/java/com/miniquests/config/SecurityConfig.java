@@ -2,6 +2,7 @@ package com.miniquests.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -9,6 +10,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 
 @Configuration
 @EnableWebSecurity
@@ -16,7 +19,9 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(
             HttpSecurity http,
-            AuthenticationEntryPoint authenticationEntryPoint
+            AuthenticationEntryPoint authenticationEntryPoint,
+            AccessDeniedHandler accessDeniedHandler,
+            AuthorizationManager<RequestAuthorizationContext> userStatusAuthorizationManager
     ) {
         return http
                 // Stateless JWT(Bearer) 인증이라 쿠키/세션을 쓰지 않으므로 CSRF 보호 불필요
@@ -27,7 +32,7 @@ public class SecurityConfig {
                 )
                 // 모든 요청: 인증된 사용자만 접근
                 .authorizeHttpRequests(auth ->
-                        auth.anyRequest().authenticated()
+                        auth.anyRequest().access(userStatusAuthorizationManager)
                 )
                 // Authorization: Bearer <JWT> 사용, 검사
                 .oauth2ResourceServer(oauth2 ->
@@ -37,6 +42,7 @@ public class SecurityConfig {
                 // 토큰 없이 제한된 접근하면 401 응답
                 .exceptionHandling(exception ->
                         exception.authenticationEntryPoint(authenticationEntryPoint)
+                                .accessDeniedHandler(accessDeniedHandler)
                 )
 
                 .build();

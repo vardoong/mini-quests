@@ -14,6 +14,7 @@ public enum AppErrorCode implements ErrorCode {
     ENDPOINT_NOT_FOUND(ErrorType.NOT_FOUND, "APP-005", "요청한 경로를 찾을 수 없습니다."),
     METHOD_NOT_ALLOWED(ErrorType.METHOD_NOT_ALLOWED, "APP-006", "지원하지 않는 HTTP 메서드입니다."),
     UNCLASSIFIED_CLIENT_ERROR(ErrorType.INVALID, "APP-007", "요청을 처리할 수 없습니다."),
+    SUSPENDED_USER(ErrorType.FORBIDDEN, "APP-008", "정지된 회원입니다."),
     ;
 
     private final ErrorType type;
