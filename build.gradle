@@ -24,3 +24,10 @@ subprojects {
         }
     }
 }
+
+tasks.register('installGitHooks', Exec) {
+    group = 'setup'
+    description = 'Installs the repository Git hooks'
+    workingDir rootProject.projectDir
+    commandLine 'git', 'config', 'core.hooksPath', '.githooks'
+}
