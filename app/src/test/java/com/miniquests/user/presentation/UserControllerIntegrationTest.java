@@ -6,8 +6,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.oauth2.jwt.BadJwtException;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@Import(UserControllerIntegrationTest.JwtDecoderTestConfiguration.class)
 class UserControllerIntegrationTest {
 
     private static final String OIDC_ISSUER = "http://127.0.0.1:8080/realms/mini-quests";
@@ -33,6 +40,18 @@ class UserControllerIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @TestConfiguration(proxyBeanMethods = false)
+    static class JwtDecoderTestConfiguration {
+
+        @Bean
+        @Primary
+        JwtDecoder jwtDecoder() {
+            return token -> {
+                throw new BadJwtException("테스트용 디코더가 토큰을 거부했습니다.");
+            };
+        }
+    }
 
     @Test
     @DisplayName("인증되지 않은 요청은 현재 회원 정보를 조회할 수 없다")
