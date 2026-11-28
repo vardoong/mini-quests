@@ -6,4 +6,6 @@ public enum ErrorType {
     CONFLICT,
     FORBIDDEN,
     UNAUTHORIZED,
+    INTERNAL_SERVER_ERROR,
+    METHOD_NOT_ALLOWED,
 }

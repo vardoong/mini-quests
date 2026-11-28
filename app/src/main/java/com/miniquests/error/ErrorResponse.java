@@ -10,4 +10,7 @@ public record ErrorResponse(
         @JsonInclude(JsonInclude.Include.NON_EMPTY)
         Map<String, Object> details
 ) {
+    public ErrorResponse(String code, String message) {
+        this(code, message, null);
+    }
 }
