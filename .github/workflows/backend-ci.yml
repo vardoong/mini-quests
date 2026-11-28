@@ -55,6 +55,9 @@ jobs:
 
 
         steps:
+            - name: Slack 알림 테스트
+              run: exit 1
+
             - name: 저장소 가져오기
               uses: actions/checkout@v7
               with:

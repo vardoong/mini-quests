@@ -1,0 +1,31 @@
+name: Notify Slack on CI failure
+
+on:
+  workflow_run:
+    workflows: [ "Backend CI" ]
+    types: [ completed ]
+
+permissions: { }
+
+jobs:
+  notify:
+    if: >-
+      github.event.workflow_run.conclusion == 'failure' ||
+      github.event.workflow_run.conclusion == 'timed_out'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Slack message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          REPO: ${{ github.repository }}
+          WORKFLOW: ${{ github.event.workflow_run.name }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+          ACTOR: ${{ github.event.workflow_run.actor.login }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+        run: |
+          text=$(printf '❌ CI 실패: %s\n워크플로: %s\n브랜치: %s\n실행한 사람: %s\n%s' \
+            "$REPO" "$WORKFLOW" "$BRANCH" "$ACTOR" "$RUN_URL")
+          jq -n --arg text "$text" '{text: $text}' |
+            curl --fail-with-body -sS -X POST \
+              -H 'Content-Type: application/json' \
+              --data @- "$SLACK_WEBHOOK_URL"
