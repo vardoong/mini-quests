@@ -1,91 +1,88 @@
 name: Backend CI
 
 on:
-    push:
-        branches: [main]
-        paths-ignore:
-            - 'docs/**'
-            - 'mkdocs.yml'
-            - ".github/workflows/docs.yml"
-    pull_request:
-        branches: [main]
-        paths-ignore:
-            - 'docs/**'
-            - 'mkdocs.yml'
-            - ".github/workflows/docs.yml"
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - ".github/workflows/docs.yml"
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - ".github/workflows/docs.yml"
 
 permissions:
-    contents: read
+  contents: read
 
 # 같은 PR 의 이전 실행은 취소한다.
 # main 에서 실행 중인 작업은 취소하지 않는다.
 # 대기중인 실행은 새 실행으로 대체될 수 있다.
 concurrency:
-    group: ${{ github.workflow }}-${{ github.ref }}
-    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-    build:
-        name: Build and test
-        runs-on: ubuntu-24.04
-        timeout-minutes: 30
+  build:
+    name: Build and test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
 
-        # 테스트용 컨테이너 (job 종료시 정리됨)
-        services:
-            postgres:
-                image: postgres:18.7-alpine3.23
-                env:
-                    POSTGRES_DB: mini_quest
-                    POSTGRES_USER: mini_user
-                    POSTGRES_PASSWORD: mini_password
-                ports:
-                    - 5432:5432
-                options: >-
-                    --health-cmd "pg_isready -U mini_user -d mini_quest"
-                    --health-interval 10s
-                    --health-timeout 5s
-                    --health-retries 5
-
-        # 환경변수 설정
+    # 테스트용 컨테이너 (job 종료시 정리됨)
+    services:
+      postgres:
+        image: postgres:18.7-alpine3.23
         env:
-            POSTGRES_DB: mini_quest
-            POSTGRES_USER: mini_user
-            POSTGRES_PASSWORD: mini_password
-            POSTGRES_PORT: 5432
+          POSTGRES_DB: mini_quest
+          POSTGRES_USER: mini_user
+          POSTGRES_PASSWORD: mini_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U mini_user -d mini_quest"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    # 환경변수 설정
+    env:
+      POSTGRES_DB: mini_quest
+      POSTGRES_USER: mini_user
+      POSTGRES_PASSWORD: mini_password
+      POSTGRES_PORT: 5432
 
 
-        steps:
-            - name: Slack 알림 테스트
-              run: exit 1
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
-            - name: 저장소 가져오기
-              uses: actions/checkout@v7
-              with:
-                  persist-credentials: false
+      - name: Java 21 설정
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
 
-            - name: Java 21 설정
-              uses: actions/setup-java@v6
-              with:
-                  distribution: temurin
-                  java-version: '21'
+      - name: Gradle 설정
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          # main 브랜치 = 캐시 읽기+쓰기, PR 등 다른 브랜치 = 캐시 읽기
+          cache-provider: basic
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
 
-            - name: Gradle 설정
-              uses: gradle/actions/setup-gradle@v6
-              with:
-                  # main 브랜치 = 캐시 읽기+쓰기, PR 등 다른 브랜치 = 캐시 읽기
-                  cache-provider: basic
-                  cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+      - name: 빌드, 테스트
+        run: ./gradlew clean build
 
-            - name: 빌드, 테스트
-              run: ./gradlew clean build
-
-            - name: 테스트 보고서 업로드
-              if: always()
-              uses: actions/upload-artifact@v7
-              with:
-                  name: test-reports
-                  retention-days: 14
-                  path: |
-                      **/build/reports/tests/test/**
-                      **/build/test-results/test/**
-                  if-no-files-found: ignore
+      - name: 테스트 보고서 업로드
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-reports
+          retention-days: 14
+          path: |
+            **/build/reports/tests/test/**
+            **/build/test-results/test/**
+          if-no-files-found: ignore
